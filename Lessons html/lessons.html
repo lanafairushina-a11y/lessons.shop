@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>EKS Online — языковые уроки и курсы</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Можно использовать тот же фавикон, что на основном сайте -->
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <style>
+    :root {
+      --blue-main: #1360c4;
+      --blue-soft: #f2f7ff;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #4b5563;
+      --btn-blue: #1658b5;
+      --btn-blue-hover: #134899;
+      --price: #15803d;
+      --old-price: #9ca3af;
+      --shadow-soft: 0 10px 30px rgba(15, 23, 42, 0.12);
+      --radius-lg: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--blue-soft);
+      color: var(--text-main);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Шапка страницы */
+    header {
+      background: var(--blue-main);
+      color: #ffffff;
+      padding: 1.4rem 1.25rem 2.3rem;
+      box-shadow: 0 4px 15px rgba(15, 23, 42, 0.35);
+    }
+
+    .header-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .logo-text {
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      opacity: 0.9;
+      margin-bottom: 0.5rem;
+    }
+
+    h1 {
+      font-size: clamp(1.7rem, 1.1rem + 1.7vw, 2.3rem);
+      margin-bottom: 0.4rem;
+    }
+
+    .header-subtitle {
+      font-size: 0.95rem;
+      opacity: 0.94;
+    }
+
+    main {
+      flex: 1;
+      padding: 2.2rem 1.25rem 3rem;
+    }
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    .intro {
+      margin-bottom: 1.8rem;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    /* Сетка карточек */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 1000px) {
+      .cards-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .cards-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-top {
+      position: relative;
+      width: 100%;
+      padding-top: 58%; /* соотношение сторон обложки */
+      overflow: hidden;
+    }
+
+    .card-top img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .card-body {
+      padding: 1.1rem 1.2rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      flex: 1;
+    }
+
+    .card-tag {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+
+    .card-title {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .card-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      flex: 1;
+    }
+
+    .card-price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      margin-top: 0.3rem;
+    }
+
+    .price-current {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--price);
+    }
+
+    .price-old {
+      font-size: 0.9rem;
+      color: var(--old-price);
+      text-decoration: line-through;
+    }
+
+    .card-footer {
+      margin-top: 0.9rem;
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    .btn-primary {
+      border-radius: 999px;
+      padding: 0.55rem 1.35rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      background: var(--btn-blue);
+      color: #ffffff;
+      transition: background 0.2s ease, transform 0.15s ease,
+        box-shadow 0.15s ease;
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
+    }
+
+    .btn-primary:hover {
+      background: var(--btn-blue-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.45);
+    }
+
+    footer {
+      padding: 1.4rem 1.25rem 1.8rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    /* Модальное окно */
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 1rem;
+    }
+
+    .modal-backdrop.active {
+      display: flex;
+    }
+
+    .modal {
+      background: #ffffff;
+      max-width: 860px;
+      width: 100%;
+      border-radius: 24px;
+      box-shadow: 0 24px 70px rgba(15, 23, 42, 0.35);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      max-height: 90vh;
+    }
+
+    @media (max-width: 700px) {
+      .modal {
+        max-height: 92vh;
+      }
+    }
+
+    .modal-header-img {
+      position: relative;
+      width: 100%;
+      padding-top: 40%;
+      overflow: hidden;
+    }
+
+    .modal-header-img img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .modal-content {
+      padding: 1.4rem 1.6rem 1.5rem;
+      overflow-y: auto;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 0.6rem;
+      right: 0.6rem;
+      background: rgba(15, 23, 42, 0.55);
+      border: none;
+      color: #ffffff;
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      font-size: 1.3rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+
+    .modal-tag {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .modal-desc {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+    }
+
+    .modal-desc p {
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-desc ul {
+      padding-left: 1.1rem;
+      margin-bottom: 0.7rem;
+    }
+
+    .modal-desc li {
+      margin-bottom: 0.25rem;
+    }
+
+    .modal-actions {
+      margin-top: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      align-items: center;
+    }
+
+    .btn-secondary {
+      border-radius: 999px;
+      padding: 0.55rem 1.35rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      border: 1px solid var(--btn-blue);
+      background: transparent;
+      color: var(--btn-blue);
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="header-inner">
+        <div class="logo-text">EKS ONLINE</div>
+        <h1>Языковые уроки и курсы</h1>
+        <div class="header-subtitle">Английский · Онлайн · С детьми и взрослыми</div>
+      </div>
+    </header>
+
+    <main>
+      <div class="container">
+        <p class="intro">
+          Выберите формат занятий, который подойдёт вам и вашему ребёнку. Цены совпадают с основным сайтом EKS Online:
+          индивидуальные онлайн-уроки для детей, подростков и взрослых.
+        </p>
+
+        <div class="cards-grid">
+          <!-- Карточка 1: дети 4–6 лет -->
+          <article class="card">
+            <div class="card-top">
+              <!-- Замените src на свою картинку обложки -->
+              <img src="img/store-kids-4-6.jpg" alt="Индивидуальные занятия для детей 4–6 лет" />
+            </div>
+            <div class="card-body">
+              <div class="card-tag">Индивидуальные занятия</div>
+              <h2 class="card-title">Дети 4–6 лет</h2>
+              <p class="card-desc">
+                45 минут в игровом формате: движение, песни, картинки. Главная цель — полюбить английский и не бояться
+                его звучания.
+              </p>
+              <div class="card-price-row">
+                <div class="price-current">1&nbsp;400&nbsp;₽</div>
+                <div class="price-old">1&nbsp;600&nbsp;₽</div>
+              </div>
+
+              <!-- Скрытый блок с подробным описанием для модалки -->
+              <div class="card-modal-content" style="display:none;">
+                <p><strong>Формат:</strong> индивидуальные онлайн-уроки 1 раз в неделю или чаще, по договорённости.</p>
+                <p><strong>На этом тарифе ребёнок:</strong></p>
+                <ul>
+                  <li>привыкает к английской речи через игры, песенки и мини-сюжеты;</li>
+                  <li>осваивает базовые фразы приветствия, просьбы, цвета, игрушки, животных;</li>
+                  <li>учится повторять за преподавателем и говорить короткими фразами;</li>
+                  <li>получает первые «успехи» и ощущение «у меня получается».</li>
+                </ul>
+                <p>
+                  <strong>Для родителей:</strong> после каждого занятия даю короткую обратную связь — что сегодня
+                  делали, что порадовало и что можно поддержать дома.
+                </p>
+              </div>
+
+              <div class="card-footer">
+                <button class="btn-primary js-more-btn" type="button">Подробнее</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Карточка 2: дети 7–11 лет -->
+          <article class="card">
+            <div class="card-top">
+              <img src="img/store-kids-7-11.jpg" alt="Индивидуальные занятия для детей 7–11 лет" />
+            </div>
+            <div class="card-body">
+              <div class="card-tag">Индивидуальные занятия</div>
+              <h2 class="card-title">Дети 7–11 лет</h2>
+              <p class="card-desc">
+                60 минут квестов, историй и разговорной практики. Поддерживаем школьный английский и расширяем словарь
+                через интересы ребёнка.
+              </p>
+              <div class="card-price-row">
+                <div class="price-current">1&nbsp;800&nbsp;₽</div>
+                <div class="price-old">2&nbsp;000&nbsp;₽</div>
+              </div>
+
+              <div class="card-modal-content" style="display:none;">
+                <p><strong>Формат:</strong> индивидуальные занятия онлайн, с опорой на школьную программу и реальные интересы ребёнка.</p>
+                <p><strong>На этом тарифе ребёнок:</strong></p>
+                <ul>
+                  <li>разбирает грамматику на понятных примерах, а не через сухие правила;</li>
+                  <li>учится говорить о себе, семье, школе, любимых играх и хобби;</li>
+                  <li>смотрит и обсуждает короткие видео и песни на английском;</li>
+                  <li>получает аккуратную поддержку по домашней работе по английскому.</li>
+                </ul>
+                <p>
+                  <strong>Цель:</strong> чтобы английский стал привычным инструментом, а не «страшным предметом».
+                  Ребёнок чувствует уверенность и видит свой прогресс.
+                </p>
+              </div>
+
+              <div class="card-footer">
+                <button class="btn-primary js-more-btn" type="button">Подробнее</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Карточка 3: подростки 12–17 лет -->
+          <article class="card">
+            <div class="card-top">
+              <img src="img/store-teens.jpg" alt="Индивидуальные занятия для подростков" />
+            </div>
+            <div class="card-body">
+              <div class="card-tag">Индивидуальные занятия</div>
+              <h2 class="card-title">Подростки 12–17 лет</h2>
+              <p class="card-desc">
+                60 минут живой речи и подготовки к экзаменам. Разбираем грамматику на понятных примерах и много говорим
+                по темам, близким подросткам.
+              </p>
+              <div class="card-price-row">
+                <div class="price-current">2&nbsp;200&nbsp;₽</div>
+                <div class="price-old">2&nbsp;500&nbsp;₽</div>
+              </div>
+
+              <div class="card-modal-content" style="display:none;">
+                <p><strong>Формат:</strong> индивидуальные занятия: экзамены, общение, учёба за рубежом.</p>
+                <p><strong>На этом тарифе подросток:</strong></p>
+                <ul>
+                  <li>получает системную базу для ОГЭ/ЕГЭ и международных экзаменов начального уровня;</li>
+                  <li>отрабатывает говорение, письменные задания и аудирование на типовых форматах;</li>
+                  <li>учится обсуждать музыку, сериалы, планы, учёбу и карьеру на английском;</li>
+                  <li>видит, как английский связан с его реальными целями, а не только с оценками.</li>
+                </ul>
+                <p>
+                  <strong>Особое внимание:</strong> снимаем страх говорить и «страх ошибиться», обсуждаем темы, которые
+                  действительно откликаются подростку.
+                </p>
+              </div>
+
+              <div class="card-footer">
+                <button class="btn-primary js-more-btn" type="button">Подробнее</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Карточка 4: взрослые -->
+          <article class="card">
+            <div class="card-top">
+              <img src="img/store-adults.jpg" alt="Индивидуальные занятия для взрослых" />
+            </div>
+            <div class="card-body">
+              <div class="card-tag">Индивидуальные занятия</div>
+              <h2 class="card-title">Взрослые</h2>
+              <p class="card-desc">
+                60 минут разговорного английского для работы, путешествий и жизни за рубежом. Мягко снимаем страх
+                говорить и двигаемся в вашем темпе.
+              </p>
+              <div class="card-price-row">
+                <div class="price-current">2&nbsp;500&nbsp;₽</div>
+                <div class="price-old">2&nbsp;800&nbsp;₽</div>
+              </div>
+
+              <div class="card-modal-content" style="display:none;">
+                <p><strong>Формат:</strong> индивидуальные занятия онлайн под ваш запрос: работа, переезд, путешествия.</p>
+                <p><strong>На этом тарифе вы:</strong></p>
+                <ul>
+                  <li>начинаете говорить, даже если раньше «сто раз пробовали и бросали»;</li>
+                  <li>отрабатываете типичные ситуации: встречи, созвоны, small talk, путешествия;</li>
+                  <li>получаете мягкую коррекцию ошибок и понятные объяснения без перегруза правилами;</li>
+                  <li>двигаетесь в комфортном темпе, с опорой на ваши реальные задачи и дедлайны.</li>
+                </ul>
+                <p>
+                  <strong>Результат:</strong> уверенность в себе и ощущение, что английский наконец-то «работает на вас»,
+                  а не против.
+                </p>
+              </div>
+
+              <div class="card-footer">
+                <button class="btn-primary js-more-btn" type="button">Подробнее</button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      © <span id="year"></span> EKS Online. Индивидуальные онлайн-занятия по английскому.
+    </footer>
+  </div>
+
+  <!-- Модальное окно -->
+  <div class="modal-backdrop" id="courseModal">
+    <div class="modal">
+      <div class="modal-header-img">
+        <img src="" alt="" id="modalImg">
+        <button class="modal-close" type="button" id="modalCloseBtn">&times;</button>
+      </div>
+      <div class="modal-content">
+        <div class="modal-tag" id="modalTag"></div>
+        <h2 class="modal-title" id="modalTitle"></h2>
+        <div class="modal-price-row">
+          <div class="price-current" id="modalPriceCurrent"></div>
+          <div class="price-old" id="modalPriceOld"></div>
+        </div>
+        <div class="modal-desc" id="modalDesc"></div>
+        <div class="modal-actions">
+          <!-- Кнопка — сразу в WhatsApp -->
+          <a href="https://wa.me/79515155755" target="_blank" class="btn-primary" id="modalCta">
+            Записаться в WhatsApp
+          </a>
+          <button class="btn-secondary" type="button" id="modalCloseBtn2">Закрыть</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // год в подвале
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    const modalBackdrop = document.getElementById("courseModal");
+    const modalImg = document.getElementById("modalImg");
+    const modalTag = document.getElementById("modalTag");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalPriceCurrent = document.getElementById("modalPriceCurrent");
+    const modalPriceOld = document.getElementById("modalPriceOld");
+    const modalDesc = document.getElementById("modalDesc");
+
+    function openModalFromCard(card) {
+      const imgEl = card.querySelector(".card-top img");
+      const tagEl = card.querySelector(".card-tag");
+      const titleEl = card.querySelector(".card-title");
+      const priceCurrentEl = card.querySelector(".price-current");
+      const priceOldEl = card.querySelector(".price-old");
+      const modalContentEl = card.querySelector(".card-modal-content");
+
+      modalImg.src = imgEl ? imgEl.src : "";
+      modalImg.alt = imgEl ? imgEl.alt : "";
+
+      modalTag.textContent = tagEl ? tagEl.textContent : "";
+      modalTitle.textContent = titleEl ? titleEl.textContent : "";
+
+      modalPriceCurrent.innerHTML = priceCurrentEl ? priceCurrentEl.innerHTML : "";
+      modalPriceOld.innerHTML = priceOldEl ? priceOldEl.innerHTML : "";
+
+      modalDesc.innerHTML = modalContentEl ? modalContentEl.innerHTML : "";
+
+      modalBackdrop.classList.add("active");
+    }
+
+    function closeModal() {
+      modalBackdrop.classList.remove("active");
+    }
+
+    document.querySelectorAll(".js-more-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const card = btn.closest(".card");
+        if (card) openModalFromCard(card);
+      });
+    });
+
+    document.getElementById("modalCloseBtn").addEventListener("click", closeModal);
+    document.getElementById("modalCloseBtn2").addEventListener("click", closeModal);
+
+    modalBackdrop.addEventListener("click", (e) => {
+      if (e.target === modalBackdrop) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeModal();
+      }
+    });
+  </script>
+</body>
+</html>
